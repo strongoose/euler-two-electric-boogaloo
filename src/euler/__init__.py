@@ -7,4 +7,5 @@ def main() -> int:
     print(p.p3())
     print(p.p4())
     print(p.p5())
+    print(p.p6())
     return 0

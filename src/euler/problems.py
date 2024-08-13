@@ -105,3 +105,10 @@ def p5() -> int:
             factors.append(p)
 
     return product(factors)
+
+
+def p6() -> int:
+    sum_of_squares = sum([n**2 for n in range(0, 101)])
+    square_of_sum = sum(range(0, 101)) ** 2
+
+    return square_of_sum - sum_of_squares
