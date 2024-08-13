@@ -1,4 +1,4 @@
-from euler.problems import fibonacci, primes, prime_factors
+from euler.problems import fibonacci, primes, prime_factors, windows
 from itertools import islice
 
 
@@ -34,3 +34,16 @@ def test_prime_factors_of_another_random_big_n():
 # This one takes a couple of seconds
 # def test_prime_factors_of_another_random_bigger_n():
 #     assert prime_factors(5165787440756484) == [2, 2, 3, 3, 29, 126631, 39074731]
+
+
+def test_windows():
+    assert list(windows(range(0, 10), 3)) == [
+        [0, 1, 2],
+        [1, 2, 3],
+        [2, 3, 4],
+        [3, 4, 5],
+        [4, 5, 6],
+        [5, 6, 7],
+        [6, 7, 8],
+        [7, 8, 9],
+    ]

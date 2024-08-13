@@ -9,4 +9,5 @@ def main() -> int:
     print(p.p5())
     print(p.p6())
     print(p.p7())
+    print(p.p8())
     return 0
