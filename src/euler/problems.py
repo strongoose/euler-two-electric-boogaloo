@@ -1,6 +1,7 @@
-from typing import Iterator
-from itertools import takewhile
-from math import sqrt
+from typing import Iterator, Iterable
+
+import itertools as it
+from math import sqrt, floor
 
 
 def p1() -> int:
@@ -19,7 +20,7 @@ def fibonacci() -> Iterator[int]:
 
 def p2() -> int:
     return sum(
-        [n for n in takewhile(lambda x: x < 4_000_000, fibonacci()) if n % 2 == 0]
+        [n for n in it.takewhile(lambda x: x < 4_000_000, fibonacci()) if n % 2 == 0]
     )
 
 
@@ -42,7 +43,7 @@ def prime_factors(n: int) -> list[int]:
     dividend = n
     factors = []
 
-    for p in takewhile(lambda x: x <= sqrt(dividend), primes()):
+    for p in it.takewhile(lambda x: x <= sqrt(dividend), primes()):
         while dividend % p == 0:
             dividend = dividend // p
             factors.append(p)
@@ -56,3 +57,51 @@ def prime_factors(n: int) -> list[int]:
 
 def p3() -> int:
     return prime_factors(600851475143)[-1]
+
+
+def is_palindrome(n: int) -> bool:
+    word = str(n)
+
+    while word != "":
+        if word[0] != word[-1]:
+            return False
+
+        word = word[1:-1]
+
+    return True
+
+
+def p4() -> int:
+    max = 0
+
+    for a in range(1, 1000):
+        for b in range(1, 1000):
+            product = a * b
+            if product > max and is_palindrome(product):
+                max = a * b
+
+    return max
+
+
+def product(ns: Iterable[int]) -> int:
+    res = 1
+    for n in ns:
+        res = res * n
+    return res
+
+
+def p5() -> int:
+    """
+    My intuition was wrong with this one - initially I thought we could just take all the primes under 20 and multiply them... but if we do that the result won't divide by, e.g., 4 (== 2 * 2)
+    """
+    factors = []
+
+    for p in it.takewhile(lambda x: x < 20, primes()):
+        # We add this prime factor n times, where n is the largest integer for which factor**n < 20
+        # i.e., the floor of the nth root of 20
+        repeats = floor(20 ** (1 / p))
+
+        for _ in range(0, repeats):
+            factors.append(p)
+
+    return product(factors)

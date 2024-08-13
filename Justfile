@@ -5,7 +5,7 @@ mypy:
     rye run mypy --strict src/euler
 
 test:
-    rye test
+    rye test -v
 
 run:
 	rye run euler
