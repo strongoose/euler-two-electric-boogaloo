@@ -4,5 +4,8 @@ fix: mypy
 mypy:
     rye run mypy --strict src/euler
 
+test:
+    rye test
+
 run:
 	rye run euler

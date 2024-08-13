@@ -1,6 +1,7 @@
-from .problems import p1
+from . import problems as p
 
 
 def main() -> int:
-    print(p1())
+    print(p.p1())
+    print(p.p2())
     return 0
