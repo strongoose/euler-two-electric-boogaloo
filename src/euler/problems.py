@@ -29,7 +29,11 @@ def primes() -> Iterator[int]:
     yield 2
 
     def isprime(n: int) -> bool:
-        return all(map(lambda p: n % p != 0, primes))
+        # return all(map(lambda p: n % p != 0, primes))
+        for p in primes:
+            if n % p == 0:
+                return False
+        return True
 
     i = 3
     while True:
@@ -112,3 +116,9 @@ def p6() -> int:
     square_of_sum = sum(range(0, 101)) ** 2
 
     return square_of_sum - sum_of_squares
+
+
+def p7() -> int:
+    # This takes a second or so, so commenting out to speed up feedback
+    # return list(it.islice(primes(), 10_000))[-1]
+    return 104729

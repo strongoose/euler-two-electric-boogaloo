@@ -8,4 +8,5 @@ def main() -> int:
     print(p.p4())
     print(p.p5())
     print(p.p6())
+    print(p.p7())
     return 0
