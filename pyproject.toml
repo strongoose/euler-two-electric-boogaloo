@@ -5,7 +5,9 @@ description = "Add your description here"
 authors = [
     { name = "Dan Strong", email = "dan@glyx.co.uk" }
 ]
-dependencies = []
+dependencies = [
+    "sympy>=1.13.2",
+]
 readme = "README.md"
 requires-python = ">= 3.8"
 

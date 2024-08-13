@@ -1,5 +1,6 @@
 from typing import Iterator
 from itertools import takewhile
+from math import sqrt
 
 
 def p1() -> int:
@@ -20,3 +21,38 @@ def p2() -> int:
     return sum(
         [n for n in takewhile(lambda x: x < 4_000_000, fibonacci()) if n % 2 == 0]
     )
+
+
+def primes() -> Iterator[int]:
+    primes = [2]
+    yield 2
+
+    def isprime(n: int) -> bool:
+        return all(map(lambda p: n % p != 0, primes))
+
+    i = 3
+    while True:
+        if isprime(i):
+            primes.append(i)
+            yield i
+        i += 2
+
+
+def prime_factors(n: int) -> list[int]:
+    dividend = n
+    factors = []
+
+    for p in takewhile(lambda x: x <= sqrt(dividend), primes()):
+        while dividend % p == 0:
+            dividend = dividend // p
+            factors.append(p)
+
+    # The remaining dividend is the last prime factor
+    # This can be 1 sometimes - for example, finding the prime factors of 4
+    if dividend != 1:
+        factors.append(dividend)
+    return factors
+
+
+def p3() -> int:
+    return prime_factors(600851475143)[-1]
