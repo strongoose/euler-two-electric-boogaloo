@@ -172,3 +172,62 @@ def p8() -> int:
             max = x
 
     return max
+
+
+def isqrt(n: int) -> int | None:
+    def iterate(guess: float) -> float:
+        return (guess + n / guess) / 2
+
+    prev = n / 2
+    guess = iterate(prev)
+
+    while abs(guess - prev) >= 0.5:
+        prev, guess = guess, iterate(guess)
+
+    root = floor(guess)
+
+    if root * root == n:
+        return root
+    else:
+        return None
+
+
+def pythagorean_triplets() -> Iterator[tuple[int, int, int]]:
+    for a in range(1, 1000):
+        for b in range(a, 1000):
+            if c := isqrt(a**2 + b**2):
+                yield (a, b, c)
+
+
+def p9() -> int:
+    for a, b, c in pythagorean_triplets():
+        if a + b + c == 1000:
+            return a * b * c
+
+    # Unreachable
+    return 0
+
+
+def sieve(n: int) -> list[int]:
+    """
+    There are two key optimisations in here that have made this problem tractable in less than a second or so
+     - Instead of iterating through the sieve marking numbers as non-prime, use slice assignment. This is a _lot_ faster.
+     - A much smaller optimisation which still helps a bit is only running over non-even numbers in the sieve range.
+    """
+    sieve = [True] * (n + 1)
+
+    def sieve_for(n: int) -> None:
+        start = n * 2
+        products = len(sieve[start::n])
+        sieve[start::n] = [False] * products
+
+    limit = int(n**0.5) + 1
+    sieve_for(2)
+    for i in range(3, limit, 2):
+        sieve_for(i)
+
+    return [n for n, isprime in enumerate(sieve) if isprime and n > 1]
+
+
+def p10() -> int:
+    return sum(sieve(2_000_000))

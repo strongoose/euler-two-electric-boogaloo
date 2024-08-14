@@ -10,4 +10,6 @@ def main() -> int:
     print(p.p6())
     print(p.p7())
     print(p.p8())
+    print(p.p9())
+    print(p.p10())
     return 0

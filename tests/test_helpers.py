@@ -1,4 +1,4 @@
-from euler.problems import fibonacci, primes, prime_factors, windows
+from euler.problems import fibonacci, primes, prime_factors, windows, sieve
 from itertools import islice
 
 
@@ -47,3 +47,49 @@ def test_windows():
         [6, 7, 8],
         [7, 8, 9],
     ]
+
+
+def test_sieve_4():
+    up_to_4 = [2, 3]
+    assert sieve(4) == up_to_4
+
+
+def test_sieve_10():
+    up_to_10 = [2, 3, 5, 7]
+    assert sieve(10) == up_to_10
+
+
+def test_sieve_30():
+    up_to_30 = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
+    assert sieve(30) == up_to_30
+
+
+def test_sieve_100():
+    up_to_100 = [
+        2,
+        3,
+        5,
+        7,
+        11,
+        13,
+        17,
+        19,
+        23,
+        29,
+        31,
+        37,
+        41,
+        43,
+        47,
+        53,
+        59,
+        61,
+        67,
+        71,
+        73,
+        79,
+        83,
+        89,
+        97,
+    ]
+    assert sieve(100) == up_to_100
