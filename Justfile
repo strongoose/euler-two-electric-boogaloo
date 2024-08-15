@@ -9,3 +9,6 @@ test:
 
 run *problems:
 	rye run euler {{problems}}
+
+quick:
+	rye run euler -7 -12

@@ -52,17 +52,19 @@ def pretty_print(ps: list[Problem]) -> None:
 
 
 def main() -> int:
-    ps: list[Problem]
+    problems = all_problems()
 
     if len(sys.argv) > 1:
-        try:
-            ps = [p(int(pn)) for pn in sys.argv[1:]]
-        except AttributeError as e:
-            print(e)
-            sys.exit(1)
-    else:
-        ps = all_problems()
+        numbers = [int(n) for n in sys.argv[1:]]
+        is_skip = all(map(lambda x: x < 0, numbers))
 
-    pretty_print(ps)
+        if is_skip:
+            numbers = [-n for n in numbers]
+            problems = [p for p in problems if p.n not in numbers]
+        else:
+            numbers = [pn for pn in numbers if pn > 0]
+            problems = [p for p in problems if p.n in numbers]
+
+    pretty_print(problems)
 
     return 0
