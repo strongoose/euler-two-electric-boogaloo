@@ -1,7 +1,14 @@
 from typing import Iterator, Iterable
 
-import itertools as it
+import itertools
 from math import sqrt, floor
+
+
+def until(limit: int, it: Iterable[int]) -> Iterable[int]:
+    return itertools.takewhile(
+        lambda x: x < limit,
+        it,
+    )
 
 
 def p1() -> int:
@@ -19,9 +26,7 @@ def fibonacci() -> Iterator[int]:
 
 
 def p2() -> int:
-    return sum(
-        [n for n in it.takewhile(lambda x: x < 4_000_000, fibonacci()) if n % 2 == 0]
-    )
+    return sum([n for n in until(4_000_000, fibonacci()) if n % 2 == 0])
 
 
 def primes() -> Iterator[int]:
@@ -47,7 +52,7 @@ def prime_factors(n: int) -> list[int]:
     dividend = n
     factors = []
 
-    for p in it.takewhile(lambda x: x <= sqrt(dividend), primes()):
+    for p in itertools.takewhile(lambda x: x <= sqrt(dividend), primes()):
         while dividend % p == 0:
             dividend = dividend // p
             factors.append(p)
@@ -100,7 +105,7 @@ def p5() -> int:
     """
     factors = []
 
-    for p in it.takewhile(lambda x: x < 20, primes()):
+    for p in until(20, primes()):
         # We add this prime factor n times, where n is the largest integer for which factor**n < 20
         # i.e., the floor of the nth root of 20
         repeats = floor(20 ** (1 / p))
@@ -120,8 +125,7 @@ def p6() -> int:
 
 def p7() -> int:
     # This takes a second or so, so commenting out to speed up feedback
-    # return list(it.islice(primes(), 10_000))[-1]
-    return 104729
+    return list(itertools.islice(primes(), 10_000))[-1]
 
 
 def windows(input: Iterable[int], width: int) -> Iterator[list[int]]:
@@ -205,7 +209,7 @@ def p9() -> int:
             return a * b * c
 
     # Unreachable
-    return 0
+    assert False
 
 
 def sieve(n: int) -> list[int]:
@@ -334,3 +338,43 @@ def p11() -> int:
                 res = max(product(w), res)
 
     return res
+
+
+def triangle_numbers() -> Iterator[int]:
+    tri = 0
+    for i in itertools.count(start=1):
+        tri += i
+        yield tri
+
+
+def p12() -> int:
+    for n in triangle_numbers():
+        pfs = prime_factors(n)
+
+        # An upper bound on the number of factors for a number with p prime factors is
+        #  sum([p choose i] for i in range(1, p + 1))
+        # This works out to be 2**p - 1 for reasons I don't entirely comprehend.
+        #
+        # Anyway this makes this problem run marginally faster
+
+        upper_bound = 2 ** len(pfs) - 1
+        if upper_bound < 500:
+            continue
+
+        # According to some random Maths StackExchange, if n = p1**v1 * p2**v2 * ... * pk**vk
+        # then the number of factors of n is
+        #   product([vi + 1] for vi in [v1, ..., vk])
+        pfs_counts: dict[int, int] = {}
+        for pf in pfs:
+            if pf not in pfs_counts.keys():
+                pfs_counts[pf] = 1
+            else:
+                pfs_counts[pf] += 1
+
+        nfactors = product([v + 1 for v in pfs_counts.values()])
+
+        if nfactors > 500:
+            return n
+
+    # Unreachable
+    assert False

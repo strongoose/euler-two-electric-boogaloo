@@ -7,5 +7,5 @@ mypy:
 test:
     rye test -v
 
-run:
-	rye run euler
+run *problems:
+	rye run euler {{problems}}
