@@ -1,4 +1,5 @@
 from euler.problems import (
+    collatz,
     fibonacci,
     flip_y,
     primes,
@@ -208,3 +209,7 @@ def test_not_so_bigsum():
     expected_result = [int(digit) for digit in str(sum(numbers))]
 
     assert bigsum(*ns) == expected_result
+
+
+def test_collatz():
+    assert [*collatz(13)] == [13, 40, 20, 10, 5, 16, 8, 4, 2, 1]

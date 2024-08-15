@@ -510,8 +510,31 @@ def p13() -> int:
     """.split()
     ]
 
-    first_ten = [
-        str(digit) for digit in bigsum(*input)[:10]
-    ]
+    first_ten = [str(digit) for digit in bigsum(*input)[:10]]
 
     return int("".join(first_ten))
+
+
+def collatz(n: int) -> Iterator[int]:
+    while True:
+        yield n
+        match n:
+            case 1:
+                return
+            case n if n % 2 == 0:
+                n = n // 2
+            case n:
+                n = 3 * n + 1
+
+
+def p14() -> int:
+    # The naive way:
+    result = 0
+    longest = 0
+    for i in range(1, 1_000_001):
+        len_i = len([*collatz(i)])
+        if len_i > longest:
+            longest = len_i
+            result = i
+
+    return result
