@@ -7,18 +7,19 @@ from euler.problems import (
     sieve,
     diagonals,
     transpose,
+    bigsum,
 )
 from itertools import islice
 
 
 def test_fibonacci():
-    first_ten = list(islice(fibonacci(), 10))
+    first_ten = [*islice(fibonacci(), 10)]
 
     assert first_ten == [1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
 
 
 def test_primes():
-    first_ten = list(islice(primes(), 10))
+    first_ten = [*islice(primes(), 10)]
 
     print(first_ten)
     assert first_ten == [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
@@ -46,7 +47,7 @@ def test_prime_factors_of_another_random_big_n():
 
 
 def test_windows():
-    assert list(windows(range(0, 10), 3)) == [
+    assert [*windows(range(0, 10), 3)] == [
         [0, 1, 2],
         [1, 2, 3],
         [2, 3, 4],
@@ -110,7 +111,7 @@ def test_square_diagonals():
         [2, 3],
     ]
 
-    assert list(diagonals(arr)) == [[1], [0, 3], [2]]
+    assert [*diagonals(arr)] == [[1], [0, 3], [2]]
 
 
 def test_wide_diagonals():
@@ -119,7 +120,7 @@ def test_wide_diagonals():
         [4, 5, 6, 7],
     ]
 
-    assert list(diagonals(arr)) == [[3], [2, 7], [1, 6], [0, 5], [4]]
+    assert [*diagonals(arr)] == [[3], [2, 7], [1, 6], [0, 5], [4]]
 
 
 def test_tall_diagonals():
@@ -130,7 +131,7 @@ def test_tall_diagonals():
         [6, 7],
     ]
 
-    assert list(diagonals(arr)) == [[1], [0, 3], [2, 5], [4, 7], [6]]
+    assert [*diagonals(arr)] == [[1], [0, 3], [2, 5], [4, 7], [6]]
 
 
 def test_square_transpose():
@@ -199,3 +200,11 @@ def test_flip():
         [3, 4],
         [1, 2],
     ]
+
+
+def test_not_so_bigsum():
+    numbers = [12, 34, 28, 50]
+    ns = [[int(digit) for digit in str(number).split()] for number in numbers]
+    expected_result = [int(digit) for digit in str(sum(numbers))]
+
+    assert bigsum(*ns) == expected_result
