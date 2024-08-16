@@ -1,3 +1,3 @@
 # euler
 
-Describe your project here.
+U R a cutieπ
