@@ -540,8 +540,19 @@ def p14() -> int:
     return result
 
 
+def factorial(n: int) -> int:
+    return product(range(1, n + 1))
+
+
 def p15() -> int:
-    return NotImplemented
+    """
+    According to some random Math StackExchange, the number of selections from a set of n items with k sets of
+    identical elements of size v1, v2, ..., vk is given by:
+
+        n! / ( v1! * v2! * ... * vk! )
+    """
+
+    return factorial(40) // factorial(20) // factorial(20)
 
 
 def p16() -> int:
@@ -622,7 +633,7 @@ def number_word(n: int) -> str:
             hundreds = number_word(n // 100)
             rem = n % 100
             if rem == 0:
-                return f'{hundreds} hundred'
+                return f"{hundreds} hundred"
             else:
                 rest = number_word(rem)
                 return f"{hundreds} hundred and {rest}"
@@ -638,3 +649,47 @@ def p17() -> int:
         letters += len("".join(nword.split()))
 
     return letters
+
+
+def p18() -> int:
+    input = """
+    75
+    95 64
+    17 47 82
+    18 35 87 10
+    20 04 82 47 65
+    19 01 23 75 03 34
+    88 02 77 73 07 63 67
+    99 65 04 28 06 16 70 92
+    41 41 26 56 83 40 80 70 33
+    41 48 72 33 47 32 37 16 94 29
+    53 71 44 65 25 43 91 52 97 51 14
+    70 11 33 28 77 73 17 78 39 68 17 57
+    91 71 52 38 17 14 91 43 58 50 27 29 48
+    63 66 04 68 89 53 67 30 73 16 69 87 40 31
+    04 62 98 27 23 09 70 98 73 93 38 53 60 04 23
+    """
+
+    triangle = [[int(n) for n in line.split()] for line in input.strip().split("\n")]
+
+    """
+    Encoding routes:
+
+        The 0 route is straight down the left side of the triangle.
+        A route can then be encoded as a binary value in [0, 2**14)
+        For each binary digit, if 0 go left, if 1 go right.
+    """
+
+    directions: list[list[int]] = [[*map(int, f"{n:014b}")] for n in range(0, 2**14)]
+    route_sums = []
+
+    for dir in directions:
+        x, y = 0, 0
+        this_route_sum = triangle[y][x]
+        for step in dir:
+            x += step
+            y += 1
+            this_route_sum += triangle[y][x]
+        route_sums.append(this_route_sum)
+
+    return max(*route_sums)

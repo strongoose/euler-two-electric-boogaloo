@@ -243,11 +243,14 @@ def test_number_word_zero():
 def test_number_word_1001():
     assert number_word(1001) == "too big!"
 
+
 def test_number_word_100():
     assert number_word(100) == "one hundred"
 
+
 def test_number_word_400():
     assert number_word(400) == "four hundred"
+
 
 def test_number_word_80():
     assert number_word(80) == "eighty"
