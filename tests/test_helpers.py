@@ -2,6 +2,7 @@ from euler.problems import (
     collatz,
     fibonacci,
     flip_y,
+    number_word,
     primes,
     prime_factors,
     windows,
@@ -213,3 +214,40 @@ def test_not_so_bigsum():
 
 def test_collatz():
     assert [*collatz(13)] == [13, 40, 20, 10, 5, 16, 8, 4, 2, 1]
+
+
+def test_number_word_123():
+    assert number_word(123) == "one hundred and twenty three"
+
+
+def test_number_word_1():
+    assert number_word(1) == "one"
+
+
+def test_number_word_1000():
+    assert number_word(1000) == "one thousand"
+
+
+def test_number_word_729():
+    assert number_word(729) == "seven hundred and twenty nine"
+
+
+def test_number_word_16():
+    assert number_word(16) == "sixteen"
+
+
+def test_number_word_zero():
+    assert number_word(0) == "too small!"
+
+
+def test_number_word_1001():
+    assert number_word(1001) == "too big!"
+
+def test_number_word_100():
+    assert number_word(100) == "one hundred"
+
+def test_number_word_400():
+    assert number_word(400) == "four hundred"
+
+def test_number_word_80():
+    assert number_word(80) == "eighty"

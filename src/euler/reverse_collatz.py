@@ -55,7 +55,9 @@ class CollatzTree:
             leaf.children = [
                 CollatzNode(v, leaf, None) for v in reverse_collatz(leaf.value)
             ]
-            self.coverage = sorted(self.coverage + [node.value for node in leaf.children])
+            self.coverage = sorted(
+                self.coverage + [node.value for node in leaf.children]
+            )
             new_leaves += leaf.children
         self.leaves = new_leaves
 
@@ -76,10 +78,7 @@ class CollatzTree:
         return [[leaf.value for leaf in leaves] for leaves in results]
 
     def sequences(self) -> list[list[int]]:
-        sequences = [
-            [self.root]
-        ]
-
+        sequences = [[self.root]]
 
         noop = False
         while not noop:
@@ -87,7 +86,6 @@ class CollatzTree:
             new_sequences = []
 
             for seq in sequences:
-
                 tip = seq[-1]
 
                 if tip.children is None:

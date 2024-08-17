@@ -538,3 +538,103 @@ def p14() -> int:
             result = i
 
     return result
+
+
+def p15() -> int:
+    return NotImplemented
+
+
+def p16() -> int:
+    n = 2**1000
+    digits = [int(d) for d in str(n)]
+
+    return sum(digits)
+
+
+def number_word(n: int) -> str:
+    if n < 1:
+        return "too small!"
+
+    match n:
+        case 1:
+            return "one"
+        case 2:
+            return "two"
+        case 3:
+            return "three"
+        case 4:
+            return "four"
+        case 5:
+            return "five"
+        case 6:
+            return "six"
+        case 7:
+            return "seven"
+        case 8:
+            return "eight"
+        case 9:
+            return "nine"
+        case 10:
+            return "ten"
+        case 11:
+            return "eleven"
+        case 12:
+            return "twelve"
+        case 13:
+            return "thirteen"
+        case 14:
+            return "fourteen"
+        case 15:
+            return "fifteen"
+        case 16:
+            return "sixteen"
+        case 17:
+            return "seventeen"
+        case 18:
+            return "eighteen"
+        case 19:
+            return "nineteen"
+        case 20:
+            return "twenty"
+        case 30:
+            return "thirty"
+        case 40:
+            return "forty"
+        case 50:
+            return "fifty"
+        case 60:
+            return "sixty"
+        case 70:
+            return "seventy"
+        case 80:
+            return "eighty"
+        case 90:
+            return "ninety"
+        case 1000:
+            return "one thousand"
+
+        case n if n < 100:
+            tens = number_word((n // 10) * 10)
+            units = number_word(n % 10)
+            return f"{tens} {units}"
+
+        case n if n < 1_000:
+            hundreds = number_word(n // 100)
+            rem = n % 100
+            if rem == 0:
+                return f'{hundreds} hundred'
+            else:
+                rest = number_word(rem)
+                return f"{hundreds} hundred and {rest}"
+
+        case _:
+            return "too big!"
+
+
+def p17() -> int:
+    letters = 0
+    for n in range(1, 1001):
+        nword = number_word(n)
+        letters += len("".join(nword.split()))
+
+    return letters

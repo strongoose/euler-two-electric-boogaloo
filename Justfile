@@ -1,5 +1,5 @@
 fix: mypy
-	rye check --fix && rye fmt
+    rye fmt && rye check --fix
 
 mypy:
     rye run mypy --strict src/euler
