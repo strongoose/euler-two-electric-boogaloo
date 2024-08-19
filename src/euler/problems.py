@@ -1,7 +1,9 @@
+from dataclasses import dataclass
 from typing import Iterator, Iterable
 
 import itertools
 from math import sqrt, floor
+from typing_extensions import TypeVar
 
 
 def until(limit: int, it: Iterable[int]) -> Iterable[int]:
@@ -128,9 +130,12 @@ def p7() -> int:
     return [*itertools.islice(primes(), 10_000)][-1]
 
 
-def windows(input: Iterable[int], width: int) -> Iterator[list[int]]:
+T = TypeVar("T")
+
+
+def windows(input: Iterable[T], width: int) -> Iterator[list[T]]:
     iterator = iter(input)
-    window: list[int] = []
+    window: list[T] = []
 
     for i in range(0, width):
         window.append(next(iterator))
@@ -693,3 +698,46 @@ def p18() -> int:
         route_sums.append(this_route_sum)
 
     return max(*route_sums)
+
+
+def is_leap_year(year: int) -> bool:
+    return year % 400 == 0 or year % 4 == 0 and year % 100 != 0
+
+
+def p19() -> int:
+    @dataclass
+    class Month:
+        year: int
+        month: int
+        start_day: int
+
+        @property
+        def duration(self) -> int:
+            match self.month:
+                case 1:
+                    if is_leap_year(self.year):
+                        return 29
+                    else:
+                        return 28
+
+                case 3 | 5 | 8 | 10:
+                    return 30
+
+                case _:
+                    return 31
+
+    all_months = [
+        Month(year, month, -1) for year in range(1900, 2001) for month in range(0, 12)
+    ]
+
+    # 0 index start days, starting with Sunday (just this once)
+    all_months[0].start_day = 1
+
+    for prev, cur in windows(all_months, 2):
+        cur.start_day = (prev.start_day + prev.duration) % 7
+
+    return len([month for month in all_months[12:] if month.start_day == 0])
+
+
+def p20() -> int:
+    return sum(int(d) for d in str(factorial(100)))

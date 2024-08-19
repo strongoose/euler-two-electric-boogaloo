@@ -2,6 +2,7 @@ from euler.problems import (
     collatz,
     fibonacci,
     flip_y,
+    is_leap_year,
     number_word,
     primes,
     prime_factors,
@@ -254,3 +255,12 @@ def test_number_word_400():
 
 def test_number_word_80():
     assert number_word(80) == "eighty"
+
+
+def test_leap_years():
+    assert not is_leap_year(1900)
+    assert is_leap_year(1904)
+    assert is_leap_year(1992)
+    assert not is_leap_year(1993)
+    assert is_leap_year(1996)
+    assert is_leap_year(2000)
