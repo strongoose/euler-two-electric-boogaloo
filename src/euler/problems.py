@@ -2,7 +2,15 @@ from dataclasses import dataclass
 from typing import Iterator, Iterable
 
 from importlib import resources
-from itertools import chain, combinations_with_replacement, takewhile, count, combinations, islice
+from itertools import (
+    chain,
+    combinations_with_replacement,
+    permutations,
+    takewhile,
+    count,
+    combinations,
+    islice,
+)
 from math import sqrt, floor
 from typing_extensions import TypeVar
 
@@ -1080,7 +1088,7 @@ def is_abundant(n: int) -> bool:
 
 
 def p23() -> int:
-    '''
+    """
     A perfect number is a number for which the sum of its proper divisors is exactly equal to the number. For example,
     the sum of the proper divisors of 28 would be 1 + 2 + 4 + 7 + 14 = 28, which means that 28 is a perfect number.
 
@@ -1094,12 +1102,9 @@ def p23() -> int:
     less than this limit.
 
     Find the sum of all the positive integers which cannot be written as the sum of two abundant numbers.
-    '''
+    """
 
-    abundant_numbers = {
-        n for n in range(1, 28123)
-        if is_abundant(n)
-    }
+    abundant_numbers = {n for n in range(1, 28123) if is_abundant(n)}
 
     sums_of_abundant_numbers = {
         a + b for a, b in combinations_with_replacement(abundant_numbers, 2)
@@ -1107,4 +1112,56 @@ def p23() -> int:
 
     non_sums_of_abundant_numbers = set(range(1, 28123)) - sums_of_abundant_numbers
 
-    return sum(set(range(1, 28123)) - sums_of_abundant_numbers)
+    return sum(non_sums_of_abundant_numbers)
+
+
+def p24() -> int:
+    """
+    A permutation is an ordered arrangement of objects. For example, 3124 is one possible permutation of the digits 1, 2, 3 and 4. If all of the permutations are listed numerically or alphabetically, we call it lexicographic order. The lexicographic permutations of 0, 1 and 2 are:
+
+        012   021   102   120   201   210
+
+    What is the millionth lexicographic permutation of the digits 0, 1, 2, 3, 4, 5, 6, 7, 8 and 9?
+    """
+
+    # Conveniently, if you pass items into itertools.permutations in lexicographic order, it also spits out the permutations in order.
+    ps = permutations("0123456789")
+    next(islice(ps, 999_999, 999_999), None)
+
+    millionth = int("".join(next(ps)))
+    return millionth
+
+
+def p25() -> int:
+    """
+    The Fibonacci sequence is defined by the recurrence relation:
+
+        F_n = F_(n - 1) + F_(n - 2), where F_1 = 1 and F_2 = 2
+
+    Hence the first 12 terms will be:
+
+        F_1  = 1
+        F_2  = 1
+        F_3  = 2
+        F_4  = 3
+        F_5  = 5
+        F_6  = 8
+        F_7  = 13
+        F_8  = 21
+        F_9  = 34
+        F_10 = 55
+        F_11 = 89
+        F_12 = 144
+
+    The 12th term, F_12, is the first term to contain three digits.
+
+    What is the index of the first term in the Fibonacci sequence to contain 1000 digits?
+    """
+
+    answer = 0
+    for i, n in enumerate(fibonacci()):
+        if len(str(n)) >= 1_000:
+            answer = i + 1
+            break
+
+    return answer

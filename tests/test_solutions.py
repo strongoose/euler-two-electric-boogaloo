@@ -1,8 +1,6 @@
 from euler.problems import (
     p1,
     p2,
-    p22,
-    p23,
     p3,
     p4,
     p5,
@@ -22,6 +20,10 @@ from euler.problems import (
     p19,
     p20,
     p21,
+    p22,
+    p23,
+    p24,
+    p25,
 )
 
 
@@ -115,3 +117,11 @@ def test_p22():
 
 def test_p23():
     assert p23() == 4179871
+
+
+def test_p24():
+    assert p24() == 2783915460
+
+
+def test_p25():
+    assert p25() == 4782
