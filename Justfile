@@ -10,5 +10,8 @@ test:
 run *problems:
 	rye run euler {{problems}}
 
-quick:
+quickrun:
 	rye run euler -7 -12 -14
+
+quicktest:
+    rye test -v -- -k 'not test_p7' -k 'not test_p12' -k 'not test_p14'
