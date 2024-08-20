@@ -1324,3 +1324,9 @@ def consume(iterator: Iterable[T], n: int | None) -> None:
 def p28() -> int:
     corners = islice(spiral_corners(), 4 * 500 + 1)
     return sum(corners)
+
+
+def p29() -> int:
+    return len({
+        a**b for a in range(2, 101) for b in range(2, 101)
+    })
