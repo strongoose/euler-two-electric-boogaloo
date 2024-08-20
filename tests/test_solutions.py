@@ -2,6 +2,7 @@ from euler.problems import (
     p1,
     p2,
     p3,
+    p30,
     p4,
     p5,
     p6,
@@ -145,3 +146,7 @@ def test_p28():
 
 def test_p29():
     assert p29() == 9183
+
+
+def test_p30():
+    assert p30() == 443839

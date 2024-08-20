@@ -1327,6 +1327,34 @@ def p28() -> int:
 
 
 def p29() -> int:
-    return len({
-        a**b for a in range(2, 101) for b in range(2, 101)
-    })
+    return len({a**b for a in range(2, 101) for b in range(2, 101)})
+
+
+def p30() -> int:
+    """
+    Surprisingly there are only three numbers that can be written as the sum of fourth powers of their digits:
+
+        1634 = 1^4+6^4+3^4+4^4
+        8208 = 8^4+2^4+0^4+8^4
+        9474 = 9^4+4^4+7^4+4^7
+
+    As 1 = 1^4 is not a sum it is not included.
+
+    The sum of these numbers is 1634 + 8208 + 9474 = 19316.
+
+    Find the sum of all the numbers that can be written as the sum of fifth powers of their digits.
+
+    # Notes:
+    For 999999 the sum of fifth powers of its digits is 413343. To get a seventh digit in the sum, we need to jump to
+    99999999999999999, so I ma pretty sure 413343 is an upper bound for us.
+    """
+
+    def sum_of_fifth_powers_of_digits(n: int) -> int:
+        return sum(int(digit) ** 5 for digit in str(n))
+
+    ans = 0
+    for n in range(2, 413343):
+        if n == sum_of_fifth_powers_of_digits(n):
+            ans += n
+
+    return ans
