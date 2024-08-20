@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from typing import Iterator, Iterable, Callable
 
+import collections
+
 from importlib import resources
 from itertools import (
     chain,
@@ -1285,7 +1287,6 @@ def p27() -> int:
     most_primes = 0
     for a in range(-999, 1000):
         for b in range(-1000, 1001):
-
             fn = quadratic(a, b)
             n = 0
             r = fn(n)
@@ -1297,3 +1298,29 @@ def p27() -> int:
                 most_primes = n
 
     return answer
+
+
+def spiral_corners() -> Iterator[int]:
+    n = 1
+    side_length = 2
+    yield n
+
+    while True:
+        for _ in range(0, 4):
+            n += side_length
+            yield n
+        side_length += 2
+
+
+def consume(iterator: Iterable[T], n: int | None) -> None:
+    "Advance the iterator n-steps ahead. If n is None, consume entirely."
+    # Use functions that consume iterators at C speed.
+    if n is None:
+        collections.deque(iterator, maxlen=0)
+    else:
+        next(islice(iterator, n, n), None)
+
+
+def p28() -> int:
+    corners = islice(spiral_corners(), 4 * 500 + 1)
+    return sum(corners)

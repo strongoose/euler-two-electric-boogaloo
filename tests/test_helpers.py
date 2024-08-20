@@ -7,6 +7,7 @@ from euler.problems import (
     number_word,
     primes,
     prime_factors,
+    spiral_corners,
     uniq,
     windows,
     sieve,
@@ -15,7 +16,7 @@ from euler.problems import (
     bigsum,
     Fraction,
 )
-from itertools import islice
+from itertools import islice, takewhile
 
 
 def test_fibonacci():
@@ -373,3 +374,17 @@ def test_fraction_stringify():
     assert str(Fraction(103, 300)) == "0.34(3)"
     assert str(Fraction(30, 10)) == "3"
     assert str(Fraction(1, 7)) == "0.(142857)"
+
+
+def test_spiral_corners():
+    assert [*takewhile(lambda x: x <= 25, spiral_corners())] == [
+        1,
+        3,
+        5,
+        7,
+        9,
+        13,
+        17,
+        21,
+        25,
+    ]
