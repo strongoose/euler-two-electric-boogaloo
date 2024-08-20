@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 from typing import Iterator, Iterable
 
-from itertools import chain, takewhile, count, combinations, islice
+from importlib import resources
+from itertools import chain, combinations_with_replacement, takewhile, count, combinations, islice
 from math import sqrt, floor
 from typing_extensions import TypeVar
 
@@ -1046,3 +1047,64 @@ def p21() -> int:
         numbers -= {b}
 
     return sum(amicable)
+
+
+def p22() -> int:
+    """
+    Using names.txt, a 46K text file containing over five-thousand first names, begin by sorting it into alphabetical
+    order. Then working out the alphabetical value for each name, multiply this value by its alphabetical position in
+    the list to obtain a name score.
+
+    For example, when the list is sorted into alphabetical order, COLIN, which is worth 3 + 15 + 12 + 9 + 14 = 53, is
+    the 938th name in the list. So, COLIN would obtain a score of 938 × 53 = 49714.
+
+    What is the total of all the name scores in the file?
+    """
+
+    namefile = resources.files(__name__) / "names.txt"
+    with namefile.open("r") as file:
+        names = sorted([name.strip('"') for name in file.read().split(",")])
+
+    def score(pos: int, name: str) -> int:
+        letter_scores = {
+            letter: count + 1
+            for count, letter in enumerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+        }
+        return pos * sum(letter_scores[letter] for letter in name)
+
+    return sum(score(i + 1, name) for i, name in enumerate(names))
+
+
+def is_abundant(n: int) -> bool:
+    return sum(proper_factors(n)) > n
+
+
+def p23() -> int:
+    '''
+    A perfect number is a number for which the sum of its proper divisors is exactly equal to the number. For example,
+    the sum of the proper divisors of 28 would be 1 + 2 + 4 + 7 + 14 = 28, which means that 28 is a perfect number.
+
+    A number n is called deficient if the sum of its proper divisors is less than n and it is called abundant if this
+    sum exceeds n.
+
+    As 12 is the smallest abundant number, 1 + 2 + 3 + 4 + 6 = 16, the smallest number that can be written as the sum
+    of two abundant numbers is 24. By mathematical analysis, it can be shown that all integers greater than 28123 can
+    be written as the sum of two abundant numbers. However, this upper limit cannot be reduced any further by analysis
+    even though it is known that the greatest number that cannot be expressed as the sum of two abundant numbers is
+    less than this limit.
+
+    Find the sum of all the positive integers which cannot be written as the sum of two abundant numbers.
+    '''
+
+    abundant_numbers = {
+        n for n in range(1, 28123)
+        if is_abundant(n)
+    }
+
+    sums_of_abundant_numbers = {
+        a + b for a, b in combinations_with_replacement(abundant_numbers, 2)
+    }
+
+    non_sums_of_abundant_numbers = set(range(1, 28123)) - sums_of_abundant_numbers
+
+    return sum(set(range(1, 28123)) - sums_of_abundant_numbers)
