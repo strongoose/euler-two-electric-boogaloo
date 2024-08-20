@@ -1,13 +1,13 @@
 from dataclasses import dataclass
 from typing import Iterator, Iterable
 
-import itertools
+from itertools import chain, takewhile, count, combinations, islice
 from math import sqrt, floor
 from typing_extensions import TypeVar
 
 
 def until(limit: int, it: Iterable[int]) -> Iterable[int]:
-    return itertools.takewhile(
+    return takewhile(
         lambda x: x < limit,
         it,
     )
@@ -54,7 +54,7 @@ def prime_factors(n: int) -> list[int]:
     dividend = n
     factors = []
 
-    for p in itertools.takewhile(lambda x: x <= sqrt(dividend), primes()):
+    for p in takewhile(lambda x: x <= sqrt(dividend), primes()):
         while dividend % p == 0:
             dividend = dividend // p
             factors.append(p)
@@ -127,7 +127,7 @@ def p6() -> int:
 
 def p7() -> int:
     # This takes a second or so, so commenting out to speed up feedback
-    return [*itertools.islice(primes(), 10_000)][-1]
+    return [*islice(primes(), 10_000)][-1]
 
 
 T = TypeVar("T")
@@ -347,7 +347,7 @@ def p11() -> int:
 
 def triangle_numbers() -> Iterator[int]:
     tri = 0
-    for i in itertools.count(start=1):
+    for i in count(start=1):
         tri += i
         yield tri
 
@@ -741,3 +741,57 @@ def p19() -> int:
 
 def p20() -> int:
     return sum(int(d) for d in str(factorial(100)))
+
+
+def uniq(seq: Iterable[T]) -> Iterable[T]:
+    it = iter(seq)
+    prev = next(it)
+    yield prev
+    for cur in it:
+        if cur == prev:
+            continue
+        else:
+            yield cur
+            prev = cur
+
+
+def factors(n: int) -> set[int]:
+    """
+    see https://docs.python.org/3/library/itertools.html#itertools-recipes
+    """
+    pfs = prime_factors(n)
+
+    return set(
+        product(factors)
+        for factors in chain.from_iterable(
+            combinations(pfs, i) for i in range(0, len(pfs) + 1)
+        )
+    )
+
+
+def proper_factors(n: int) -> set[int]:
+    return factors(n) - {n}
+
+
+def p21() -> int:
+    """
+    Notes:
+     - https://stackoverflow.com/questions/68030993/generating-the-powerset-of-a-multiset
+    """
+
+    def d(n: int) -> int:
+        return sum(proper_factors(n))
+
+    amicable: set[int] = set()
+
+    numbers = set(range(2, 10_001))
+    while numbers:
+        a = numbers.pop()
+        b = d(a)
+
+        if a != b and d(b) == a:
+            amicable |= {a, b}
+
+        numbers -= {b}
+
+    return sum(amicable)

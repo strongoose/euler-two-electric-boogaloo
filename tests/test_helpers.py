@@ -1,11 +1,13 @@
 from euler.problems import (
     collatz,
+    factors,
     fibonacci,
     flip_y,
     is_leap_year,
     number_word,
     primes,
     prime_factors,
+    uniq,
     windows,
     sieve,
     diagonals,
@@ -264,3 +266,52 @@ def test_leap_years():
     assert not is_leap_year(1993)
     assert is_leap_year(1996)
     assert is_leap_year(2000)
+
+
+def test_uniq():
+    test_list = [1, 1, 2, 4, 3, 1]
+    assert list(uniq(test_list)) == [1, 2, 4, 3, 1]
+
+    test_list = [1, 1, 2, 4, 4, 4, 3, 1]
+    assert list(uniq(test_list)) == [1, 2, 4, 3, 1]
+
+
+def test_factors_of_6():
+    assert factors(6) == {1, 2, 3, 6}
+
+
+def test_factors_of_12():
+    assert factors(12) == {1, 2, 3, 4, 6, 12}
+
+
+def test_factors_of_18():
+    assert factors(18) == {1, 2, 3, 6, 9, 18}
+
+
+def test_factors_of_600():
+    assert factors(600) == {
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        10,
+        12,
+        15,
+        20,
+        24,
+        25,
+        30,
+        40,
+        50,
+        60,
+        75,
+        100,
+        120,
+        150,
+        200,
+        300,
+        600,
+    }
