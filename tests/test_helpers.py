@@ -13,6 +13,7 @@ from euler.problems import (
     diagonals,
     transpose,
     bigsum,
+    Fraction,
 )
 from itertools import islice
 
@@ -315,3 +316,60 @@ def test_factors_of_600():
         300,
         600,
     }
+
+
+def test_fraction_half():
+    half = Fraction(1, 2)
+
+    assert half.whole_part == 0
+    assert half.finite_part == [5]
+    assert half.infinite_part == [0]
+
+
+def test_fraction_eighth():
+    eighth = Fraction(1, 8)
+
+    assert eighth.whole_part == 0
+    assert eighth.finite_part == [1, 2, 5]
+    assert eighth.infinite_part == [0]
+
+
+def test_fraction_third():
+    third = Fraction(1, 3)
+
+    assert third.whole_part == 0
+    assert third.finite_part == []
+    assert third.infinite_part == [3]
+
+
+def test_fraction_annoying():
+    annoying = Fraction(103, 300)
+
+    assert annoying.whole_part == 0
+    assert annoying.finite_part == [3, 4]
+    assert annoying.infinite_part == [3]
+
+
+def test_fraction_whole():
+    whole = Fraction(30, 10)
+
+    assert whole.whole_part == 3
+    assert whole.finite_part == []
+    assert whole.infinite_part == [0]
+
+
+def test_fraction_seventh():
+    seventh = Fraction(1, 7)
+
+    assert seventh.whole_part == 0
+    assert seventh.finite_part == []
+    assert seventh.infinite_part == [1, 4, 2, 8, 5, 7]
+
+
+def test_fraction_stringify():
+    assert str(Fraction(1, 2)) == "0.5"
+    assert str(Fraction(1, 8)) == "0.125"
+    assert str(Fraction(1, 3)) == "0.(3)"
+    assert str(Fraction(103, 300)) == "0.34(3)"
+    assert str(Fraction(30, 10)) == "3"
+    assert str(Fraction(1, 7)) == "0.(142857)"

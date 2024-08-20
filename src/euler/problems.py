@@ -12,7 +12,7 @@ from itertools import (
     islice,
 )
 from math import sqrt, floor
-from typing_extensions import TypeVar
+from typing_extensions import NamedTuple, TypeVar
 
 
 def until(limit: int, it: Iterable[int]) -> Iterable[int]:
@@ -1165,3 +1165,86 @@ def p25() -> int:
             break
 
     return answer
+
+
+@dataclass
+class Fraction:
+    """
+    A fraction's decimal representation consists of
+
+        1. The whole part
+        2. A finite part of non-cycling decimal digits
+        3. An infinite part of cycling deciamal digits
+
+    For a non-recurring decimal, the infinite part is [0].
+    """
+
+    numerator: int
+    denominator: int
+
+    @property
+    def whole_part(self) -> int:
+        return self.numerator // self.denominator
+
+    @property
+    def _fractional_parts(self) -> tuple[list[int], list[int]]:
+        Step = NamedTuple(
+            "Step",
+            [
+                ("quotient", int),
+                ("remainder", int),
+            ],
+        )
+
+        history: list[Step] = []
+
+        remainder = self.numerator % self.denominator
+
+        while True:
+            next_step = Step(
+                10 * remainder // self.denominator,
+                10 * remainder % self.denominator,
+            )
+
+            remainder = next_step.remainder
+
+            if next_step in history:
+                idx = history.index(next_step)
+                digits = [step.quotient for step in history]
+                return digits[:idx], digits[idx:]
+
+            history.append(next_step)
+
+    @property
+    def finite_part(self) -> list[int]:
+        return self._fractional_parts[0]
+
+    @property
+    def infinite_part(self) -> list[int]:
+        return self._fractional_parts[1]
+
+    def __repr__(self) -> str:
+        finite_part_string = "".join([str(digit) for digit in self.finite_part])
+        infinite_part_string = "".join([str(digit) for digit in self.infinite_part])
+
+        match self.finite_part, self.infinite_part:
+            case [[], [0]]:
+                return f"{self.whole_part}"
+            case [[], _]:
+                return f"{self.whole_part}.({infinite_part_string})"
+            case _, [0]:
+                return f"{self.whole_part}.{finite_part_string}"
+
+        return f"{self.whole_part}.{finite_part_string}({infinite_part_string})"
+
+
+def p26() -> int:
+    best_denom = 1
+    longest_cycle = 0
+    for denom in range(2, 1000):
+        cycle_length = len(Fraction(1, denom).infinite_part)
+        if cycle_length > longest_cycle:
+            best_denom = denom
+            longest_cycle = cycle_length
+
+    return best_denom
